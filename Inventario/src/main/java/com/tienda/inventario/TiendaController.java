@@ -1,5 +1,5 @@
 package com.tienda.inventario;
-
+import com.tienda.inventario.modelos.Estadisticas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api")
@@ -46,7 +47,6 @@ public class TiendaController {
     @PostMapping("/productos/vender/{id}")
     public ResponseEntity<?> venderProducto(@PathVariable Long id, @RequestBody VentaRequest ventaRequest) {
         
-        // --- [ERROR CORREGIDO LÍNEA 66] ---
         // Se llama al método findById que ya está definido en la interfaz ProductoService
         Optional<Producto> productoOptional = productoService.findById(id);
 
@@ -66,14 +66,14 @@ public class TiendaController {
                     .body(Collections.singletonMap("message", "La cantidad a vender debe ser positiva."));
         }
         
-        // --- [ERROR CORREGIDO LÍNEA 74] ---
+      
         // Se llama al método procesarVenta que ya está definido en la interfaz ProductoService
         try {
             Venta resultadoVenta = productoService.procesarVenta(producto, ventaRequest.getCantidad());
             // Retorna un 200 OK con el objeto Venta que contiene los detalles de la transacción
             return ResponseEntity.ok(resultadoVenta);
         } catch (IllegalArgumentException e) {
-            // Captura la excepción de negocio (ej. Stock insuficiente) y retorna un 400 Bad Request
+            //  Stock insuficiente y retorna un 400 Bad Request
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Collections.singletonMap("message", e.getMessage()));
