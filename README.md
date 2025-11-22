@@ -1,0 +1,80 @@
+# Sistema de Gestión de Tienda: Inventario y Ventas
+
+Este proyecto proporciona una solución completa para la gestión de inventario y análisis de ventas, combinando un backend en Java/Spring Boot con un frontend que permite la interacción del usuario.
+
+## I. Módulo Backend (API RESTful)
+
+El backend se encarga de la lógica de negocio, persistencia de datos y generación de métricas clave para la tienda.
+
+### Tecnologías del Backend
+
+- Lenguaje: Java (JDK 17+)  
+- Framework: Spring Boot 3  
+- Persistencia: Spring Data JPA / Hibernate  
+- Utilidad: Lombok (`@Data`, `@AllArgsConstructor`, etc.)  
+- Gestor de dependencias: Maven  
+
+### Funcionalidad Clave: Métricas de Negocio
+
+El servicio principal `EstadisticasService.java` calcula métricas vitales del negocio mediante el procesamiento de entidades con Java Streams.
+
+| Métrica               | Definición                                     | Requerimiento de Entidad         |
+|-----------------------|-----------------------------------------------|---------------------------------|
+| Ingresos Totales       | Suma de los ingresos de todas las transacciones | `Venta::getTotalIngresos`       |
+| Stock Total            | Inventario físico total disponible            | `Producto::getCantidadStock`    |
+| Producto Más Vendido   | Artículo con mayor cantidad de unidades vendidas | `Producto::getNombre`           |
+| Promedio de Venta      | Valor promedio por cada transacción de venta  | Calculado                       |
+
+**Nota de compilación:**  
+Los errores tipo "cannot find symbol" se resolvieron asegurando que las entidades `Producto.java` y `Venta.java` contuvieran los campos necesarios para que Lombok generara los métodos getter utilizados en `EstadisticasService.java`.
+
+## II. Interfaz de Comunicación (API REST)
+
+El controlador `TiendaController.java` expone los siguientes endpoints:
+
+| Endpoint           | Método | Descripción                          | Uso Principal          |
+|-------------------|--------|--------------------------------------|-----------------------|
+| `/api/productos`   | GET    | Lista todos los productos en inventario | Gestión de inventario |
+| `/api/estadisticas`| GET    | Retorna todas las métricas calculadas  | Dashboard de métricas |
+
+## III. Módulo Frontend (Cliente Web)
+
+El frontend consume la API para mostrar los productos y métricas en una interfaz clara y funcional, utilizando tablas, tarjetas y gráficos.
+
+### Tecnologías del Frontend
+
+(Personalice según el framework utilizado: React, Angular, Vue, etc.)  
+- Framework: (React / Angular / Vue)  
+- Comunicación con API: Fetch API o Axios  
+- Estilos: HTML/CSS/JS  
+
+## Guía de Instalación y Uso
+
+### 1. Clonar el repositorio
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+
+
+### inicia Back
+
+# Navegar a la carpeta que contiene el pom.xml
+cd Inventario/Inventario
+
+# Construir el proyecto
+mvn clean install
+
+# Ejecutar la aplicación
+java -jar target/inventario-0.0.1-SNAPSHOT.jar
+La API estará disponible en http://localhost:8080.
+
+####inicia front 
+
+# Navegar a la carpeta del frontend
+cd ruta/al/frontend
+
+# Instalar dependencias
+npm install
+
+# Ejecutar la aplicación
+npm start
